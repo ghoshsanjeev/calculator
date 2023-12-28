@@ -1,23 +1,70 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Standard Calculator</title>
     <script type="text/javascript" src="calculator.js"></script>
     <style>
-        .font-30{
-            font-size: 30px;
-            text-align: center;
+        @font-face {
+            font-family: 'digital-clock-font';
+            src: url('fonts/digital-7-italic.ttf');
         }
+
+        .fraction {
+            display: inline-block;
+            position: relative;
+            vertical-align: text-bottom;
+        }
+
+        .numerator {
+            position: absolute;
+            top: 20%;
+            /* Use a negative percentage for relative positioning */
+            left: 10px;
+            /* Specify the unit for the left property */
+            font-size: small;
+        }
+
+        .slash-sign {
+            position: absolute;
+            top: 22%;
+            /* Use a negative percentage for relative positioning */
+            left: 15px;
+            /* Specify the unit for the left property */
+            font-size: large;
+        }
+
+        .equal-button {
+            background-color: #4A2E1E;
+            color: white;
+            font-size: 30px;
+            border-radius: 4px;
+        }
+
+        .equal-button:hover {
+            background-color: #63412B;
+        }
+
         table {
             border-collapse: collapse;
-            width: 180px; /* Adjust the width as needed */
-            margin: 20px auto; /* Center the table on the page */
-            border: 2px solid #ccc; /* Border style and color */
+            width: 210px;
+            margin: 20px auto;
+            border: 2px solid #ccc;
         }
+
+        /* Common class for all buttons */
         button {
-            width: 40px; /* Adjust the width as needed */
-            height: 40px; /* Adjust the height as needed */
-            font-size: 16px; /* Adjust the font size as needed */
+            width: 50px;
+            height: 50px;
+            font-size: 18px;
+        }
+
+        #result {
+            width: 100%;
+            font-size: x-large;
+            font-family: 'digital-clock-font';
+            font-weight: 400;
         }
     </style>
 </head>
@@ -38,24 +85,25 @@
                     <button>CE</button>
                 </td>
                 <td>
-                    <button>C</button>
+                    <button onclick="reset()">🗑️</button>
                 </td>
                 <td>
-                    <button>🗑️</button>
+                    <button onclick="deleteFromRight()">⌫</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button onclick="setArg(7)">1/x</button>
+                    <button class="fraction"><span class="numerator">1</span><span
+                            class="slash-sign">/</span><span>x</span></button>
                 </td>
                 <td>
-                    <button onclick="setArg(8)">x²</button>
+                    <button>x²</button>
                 </td>
                 <td>
-                    <button onclick="setArg(9)">√x</button>
+                    <button>√x</button>
                 </td>
                 <td>
-                    <button  onclick="setOperator('devide')">➗</button>
+                    <button onclick="setOperator('divide')">➗</button>
                 </td>
             </tr>
             <tr>
@@ -69,7 +117,7 @@
                     <button onclick="setArg(9)">9</button>
                 </td>
                 <td>
-                    <button  onclick="setOperator('multiply')">❌</button>
+                    <button onclick="setOperator('multiply')">❌</button>
                 </td>
             </tr>
             <tr>
@@ -97,21 +145,21 @@
                     <button onclick="setArg(3)">3</button>
                 </td>
                 <td>
-                    <button  onclick="setOperator('add')">➕</button>
+                    <button onclick="setOperator('add')">➕</button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button >+/-</button>
+                    <button>+/-</button>
                 </td>
                 <td>
-                    <button onclick="setArg(0)">0</button>
+                    <button onclick="setArg('0')">0</button>
                 </td>
                 <td>
-                    <button onclick="setArg(.)">.</button>
+                    <button onclick="setArg('.')">.</button>
                 </td>
                 <td>
-                    <button class="font-30" onclick="calculate()">=</button>
+                    <button class="equal-button" onclick="calculate()">=</button>
                 </td>
             </tr>
         </tbody>

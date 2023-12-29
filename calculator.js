@@ -1,12 +1,18 @@
 var arg1 = "", arg2 = "";
-let isArg1Set = false;
+var isArg1Set = false;
+var isArg2Set = false;
 var operator = ""
+var result = 0
+var resultTextBox;
 
+function cleanUp() {
+    reset();
+    setResult(0);
+}
 function reset() {
     arg1 = "", arg2 = "";
     isArg1Set = false;
-    operator = ""
-    showValue("");
+    operator = "";
 }
 
 function setArg1(txt) {
@@ -27,9 +33,18 @@ function setArg(txt) {
     }
 }
 
-function setOperator(op) {
+function setOperator(op, symbol) {
+    if (operator) {
+        calculate();
+    }
+    if (result && !isNaN(result)) {
+        arg1 = result;
+    }
     operator = op;
-    isArg1Set = true;
+    if (arg1) {
+        isArg1Set = true;
+    }
+    showValue(symbol);
 }
 
 function compute(operator, num1, num2) {
@@ -56,32 +71,39 @@ function compute(operator, num1, num2) {
     return value;
 }
 
+function setResult(value) {
+    result = value
+    console.log("result: ", result);
+    updateResult(value);
+}
+
 function showValue(value) {
-    document.getElementById("result").value = value;
-    updateResult();
+    resultTextBox = document.getElementById("result");
+    resultTextBox.value = value;
 }
 
 function calculate() {
-    let result = compute(operator, Number(arg1), Number(arg2));
-    console.log("result: ", result);
+    if (arg1 && arg2) {
+        setResult(compute(operator, Number(arg1), Number(arg2)));
+    } else {
+        setResult(arg1);
+    }
     reset()
-    setArg1(result);
 }
 
-function updateResult() {
-    let resultElement = document.getElementById("result");
-    let originalValue = resultElement.value;
-    let resultValue = parseFloat(resultElement.value);
-    if (!isNaN(resultValue)) {
-        let formattedResult = new Intl.NumberFormat().format(resultValue);
-        resultElement.value = formattedResult;
+function updateResult(value) {
+    let originalValue = resultTextBox.value;
+    let newValue = parseFloat(value);
+    if (!isNaN(newValue)) {
+        let formattedResult = new Intl.NumberFormat().format(newValue);
+        showValue(formattedResult);
     } else {
-        resultElement.value = originalValue;
+        showValue(originalValue);
     }
 }
 
 function deleteFromRight() {
     let valueWithoutCommas = document.getElementById("result").value.replaceAll(',', '');
     console.log("valueWithoutCommas", valueWithoutCommas)
-    showValue(valueWithoutCommas.slice(0, -1));
+    setResult(valueWithoutCommas.slice(0, -1));
 }
